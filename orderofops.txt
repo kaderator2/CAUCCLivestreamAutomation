@@ -1,0 +1,28 @@
+BEFORE 9:25 ~
+
+PHYSICAL - turn cameras on
+PHYSICAL - turn control board on 121
+PHYSICAL - turn computer on 9:15
+OS - login
+OS - update slideshow directory
+OS - move cameras to default
+OS - turn OBS on
+CHROME - login to youtube
+CHROME - change youtube thumbnail
+CHROME - change youtube title
+OBS - mute Mic/Aux
+OBS - switch to Slideshow
+OBS - GO LIVE AT 9:20
+
+MAIN LOOP -
+
+1. check for packet from control board
+2. decrypt packet from control board
+3. parse packet from control board
+4. change OBS scene away from camera in packet
+5. Check for pixel motion, wait for no pixel motion, switch if on same or qs specified
+	(camera 1 preset 6 quick switches
+	 camera 1, 2 preset 4 & 5 quick switches)
+	5. switch to new scene IFF step DID NOT happen
+
+POST SERVICE ~

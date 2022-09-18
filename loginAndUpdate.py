@@ -27,7 +27,7 @@ def get_login(filename):
     #    "[SQUARESPACE] Please Enter the SquareSpace Password: ")
 
 
-def attemptSquareSpaceLogin(driver, level, max_depth):
+def attemptSquareSpaceLogin(driver, max_depth, level):
     if level < max_depth:
         try:
             # opens the square space website
@@ -51,19 +51,21 @@ def attemptSquareSpaceLogin(driver, level, max_depth):
             time.sleep(5)
             if not driver.find_elements(By.XPATH, '//*[@id="renderTarget"]/div/div[3]/div/div/div/div/div/div/div/div[1]/div[1]/h1'):
                 print(
-                    f"[SQUARESPACE][WARNING] Cant login! Was Username/Password was incorrect?\n{max_depth - level + 1} Attempts remaining...\n")
-                attemptSquareSpaceLogin(driver, level=level + 1, max_depth)
+                    f"[SQUARESPACE][WARNING] Cant login! Was Username/Password was incorrect?\n{max_depth - level} Attempt(s) remaining...\n")
+                attemptSquareSpaceLogin(driver,  max_depth, level=level + 1)
             print("[SQUARESPACE][SUCCESS] Logged in to square space..")
             if not driver.find_elements(By.XPATH, '//*[@id="renderTarget"]/div/div[3]/div/div/div/div/div/div/div/div[2]/div/div/div/div/div[1]/a'):
-                print("[SQUARESPACE][WARNING] Cant Find CAUCC!")
-                attemptSquareSpaceLogin(driver, level=level + 1, max_depth)
+                print(
+                    f"[SQUARESPACE][WARNING] Cant Find CAUCC!\n{max_depth - level} Attempt(s) remaining...\n")
+                attemptSquareSpaceLogin(driver,  max_depth, level=level + 1)
             else:
-                return True
+                return True, driver
         except Exception as error:
             print(
-                f"[SQUARESPACE][WARNING] Cant login! Execption was thrown\n{error}\n{max_depth - level + 1} Attempts remaining...\n")
-            attemptSquareSpaceLogin(driver, level=level + 1, max_depth)
+                f"[SQUARESPACE][WARNING] Cant login! Execption was thrown\n{error}\n{max_depth - level} Attempt(s) remaining...\n")
+            attemptSquareSpaceLogin(driver,  max_depth, level=level + 1)
     else:
+        driver.quit()
         return False
 
 
@@ -86,7 +88,7 @@ def attemptYouTubeLogin(driver):
 
 def mainSquareSpace():
     driver = webdriver.Chrome(options=chrome_options)
-    logged_in = attemptSquareSpaceLogin(driver, 0, 3)
+    logged_in = attemptSquareSpaceLogin(driver, 3, 0)
     if logged_in:
         print("[SQUARESPACE][SUCCESS] Properly initialized Squarespace..")
     else:
